@@ -38,8 +38,11 @@ processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand (
+				"version": project.version,
+		)
 	}
+
 }
 
 tasks.withType(JavaCompile).configureEach {
@@ -78,6 +81,7 @@ publishing {
 }
 
 curseforge {
+
 	if(!System.getenv().containsKey("apikey")){
 		System.out.println("Could not upload, api key not found")
 		return
@@ -87,7 +91,7 @@ curseforge {
 			id = '656780'
 			changelog = 'Initial commit'
 			releaseType = 'release'
-			addGameVersion '1.19'
+			addGameVersion '1.19.2'
 
 			mainArtifact(remapJar) {
 				displayName = "WildMod Comparably Better: $project.version"
@@ -95,7 +99,6 @@ curseforge {
 			afterEvaluate {
 				tasks.curseforge.dependsOn remapJar
 			}
-
 		}
 		options {
 			forgeGradleIntegration = false
